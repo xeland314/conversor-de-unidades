@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import com.xeland314.conversores.ConversorUniversal;
@@ -76,14 +77,12 @@ public class App {
 		frmConversorDeUnidades.setFont(this.currentFont);
 		frmConversorDeUnidades.setTitle("Conversor De Unidades");
 		frmConversorDeUnidades.setBounds(100, 100, 446, 336);
-		frmConversorDeUnidades.setMinimumSize(new Dimension(480, 360));
-		frmConversorDeUnidades.setMaximumSize(new Dimension(480, 360));
+		frmConversorDeUnidades.setMinimumSize(new Dimension(480, 400));
+		frmConversorDeUnidades.setMaximumSize(new Dimension(480, 400));
 		frmConversorDeUnidades.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{40, 100, 100, 180, 40, 0};
-		gridBagLayout.rowHeights = new int[]{20, 80, 15, 30, 30, 30, 15, 60, 15, 20, 20, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[]{40, 100, 100, 200, 40};
+		gridBagLayout.rowHeights = new int[]{20, 120, 20, 30, 30, 20, 20, 30, 20, 20, 20};
 		frmConversorDeUnidades.getContentPane().setLayout(gridBagLayout);
 
 		Component verticalGlue_1 = Box.createVerticalGlue();
@@ -95,19 +94,21 @@ public class App {
 		gbc_verticalGlue_1.gridy = 0;
 		frmConversorDeUnidades.getContentPane().add(verticalGlue_1, gbc_verticalGlue_1);
 
+		JScrollPane scrollPane = new JScrollPane();
 		panelConversion = new JTextPane();
 		panelConversion.setEditable(false);
-		panelConversion.setFont(new Font("DejaVu Sans", Font.BOLD, 24));
+		panelConversion.setFont(new Font("DejaVu Sans", Font.BOLD, 25));
 		panelConversion.setForeground(Color.BLUE);
 		panelConversion.setAutoscrolls(true);
 		panelConversion.enableInputMethods(true);
+		scrollPane.setViewportView(panelConversion);
 		GridBagConstraints gbc_textPane = new GridBagConstraints();
 		gbc_textPane.gridwidth = 3;
 		gbc_textPane.insets = new Insets(0, 0, 5, 5);
 		gbc_textPane.fill = GridBagConstraints.BOTH;
 		gbc_textPane.gridx = 1;
 		gbc_textPane.gridy = 1;
-		frmConversorDeUnidades.getContentPane().add(panelConversion, gbc_textPane);
+		frmConversorDeUnidades.getContentPane().add(scrollPane, gbc_textPane);
 
 		listaConversiones = new JComboBox<String>();
 		listaConversiones.setFont(currentFont);
