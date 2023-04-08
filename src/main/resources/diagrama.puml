@@ -1,0 +1,120 @@
+@startuml Conversores
+
+class UnidadBase {
+    - nombre: String
+    + UnidadBase(nombre: String)
+    + getNombre(): String
+    + setNombre(nombre: String): void
+}
+
+class ConversorBase {
+    - factorConversion: double
+    + ConversorBase(factorConversion: double)
+    + getFactorConversion(): double
+    + setFactorConversion(factorConversion: double): void
+}
+
+package temperatura {
+    class UnidadTemperatura {
+        + CELSIUS: UnidadTemperatura
+        + FAHRENHEIT: UnidadTemperatura
+        + KELVIN: UnidadTemperatura
+    }
+    class Temperatura {
+        - valor: double
+        - unidad: UnidadTemperatura
+        + Temperatura(valor: double, unidad: UnidadTemperatura)
+        + getValor(): double
+        + getUnidad(): UnidadTemperatura
+        + setValor(valor: double): void
+        + setUnidad(unidad: UnidadTemperatura): void
+    }
+    class ConversorTemperatura {
+        + convertir(temperatura: Temperatura, unidadDestino: UnidadTemperatura): Temperatura
+    }
+}
+
+package longitud {
+    class UnidadLongitud {
+        + METRO: UnidadLongitud
+        + KILOMETRO: UnidadLongitud
+        + MILLA: UnidadLongitud
+        + PIE: UnidadLongitud
+    }
+    class Longitud {
+        - valor: double
+        - unidad: UnidadLongitud
+        + Longitud(valor: double, unidad: UnidadLongitud)
+        + getValor(): double
+        + getUnidad(): UnidadLongitud
+        + setValor(valor: double): void
+        + setUnidad(unidad: UnidadLongitud): void
+    }
+    class ConversorLongitud {
+        + convertir(longitud: Longitud, unidadDestino: UnidadLongitud): Longitud
+    }
+}
+
+package tiempo {
+    class UnidadTiempo {
+        + SEGUNDO: UnidadTiempo
+        + MINUTO: UnidadTiempo
+        + HORA: UnidadTiempo
+        + DIA: UnidadTiempo
+    }
+    class Tiempo {
+        - valor: double
+        - unidad: UnidadTiempo
+        + Tiempo(valor: double, unidad: UnidadTiempo)
+        + getValor(): double
+        + getUnidad(): UnidadTiempo
+        + setValor(valor: double): void
+        + setUnidad(unidad: UnidadTiempo): void
+    }
+    class ConversorTiempo {
+        + convertir(tiempo: Tiempo, unidadDestino: UnidadTiempo): Tiempo
+    }
+}
+
+package divisas {
+    class Divisa {
+        + USD: Divisa
+        + EUR: Divisa
+        + JPY: Divisa
+        + GBP: Divisa
+    }
+    class Dinero {
+        - valor: double
+        - divisa: Divisa
+        + Dinero(valor: double, divisa: Divisa)
+        + getValor(): double
+        + getDivisa(): Divisa
+        + setValor(valor: double): void
+        + setDivisa(divisa: Divisa): void
+    }
+    class ConversorDivisas {
+        + convertir(dinero: Dinero, divisaDestino: Divisa): Dinero
+    }
+}
+
+UnidadTiempo --|> UnidadBase
+UnidadLongitud --|> UnidadBase
+UnidadTemperatura --|> UnidadBase
+Divisa --|> UnidadBase
+
+Temperatura --> UnidadTemperatura
+Longitud --> UnidadLongitud
+Tiempo --> UnidadTiempo
+Dinero --> Divisa
+
+ConversorTemperatura --|> ConversorBase
+ConversorLongitud --|> ConversorBase
+ConversorTiempo --|> ConversorBase
+ConversorDivisas --|> ConversorBase
+
+ConversorTemperatura --* Temperatura
+ConversorLongitud --* Longitud
+ConversorTiempo --* Tiempo
+ConversorDivisas --* Divisa
+
+@enduml
