@@ -6,11 +6,19 @@ Este es un proyecto de conversión de unidades desarrollado para el Challenge #2
 
 ## Demo
 
+<div align="center">
+
 ![Demo](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMGZhZjFiZGRjZjMwYzlkMDVlZmFiOWY0ZTM1NDZlZmRmOGM5ZmYxOSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/PAGoVPq3k4DmvcD2lj/giphy.gif)
+
+</div>
 
 ## Interfaz gráfica
 
+<div align="center">
+
 ![UI](src/main/resources/conversor.png)
+
+</div>
 
 ## Funcionalidades
 
