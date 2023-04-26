@@ -24,6 +24,9 @@ import javax.swing.SwingConstants;
 
 import com.xeland314.conversores.ConversorUniversal;
 import com.xeland314.conversores.UnidadBase;
+import com.xeland314.conversores.divisas.Dinero;
+import com.xeland314.conversores.divisas.Divisa;
+import com.xeland314.conversores.divisas.Monedas;
 import com.xeland314.conversores.longitud.Longitud;
 import com.xeland314.conversores.longitud.UnidadLongitud;
 import com.xeland314.conversores.longitud.UnidadesLongitud;
@@ -51,7 +54,7 @@ public class App {
 	public App() {
 		initialize();
 		opcionesConversion = new String[]{
-			"Longitud", "Tiempo", "Temperatura"
+			"Longitud", "Tiempo", "Temperatura", "Divisa"
 		};
 		this.hanCargadoLasOpciones = false;
 		this.setConversiones();
@@ -195,62 +198,6 @@ public class App {
 		frmConversorDeUnidades.getContentPane().add(verticalGlue, gbc_verticalGlue);
 	}
 
-	private UnidadBase getUnidad(String nombre, String sistema) {
-		if(sistema.equals("Longitud")) {
-			switch(nombre) {
-				case "Milímetro":
-					return UnidadesLongitud.MILIMETRO.get();
-				case "Centímetro":
-					return UnidadesLongitud.CENTIMETRO.get();
-				case "Decímetro":
-					return UnidadesLongitud.DECIMETRO.get();
-				case "Metro":
-					return UnidadesLongitud.METRO.get();
-				case "Decámetro":
-					return UnidadesLongitud.DECAMETRO.get();
-				case "Hectómetro":
-					return UnidadesLongitud.HECTOMETRO.get();
-				case "Kilómetro":
-					return UnidadesLongitud.KILOMETRO.get();
-				default:
-					return null;
-			}
-		} else if(sistema.equals("Tiempo")) {
-			switch(nombre) {
-				case "Segundo":
-					return UnidadesTiempo.SEGUNDO.get();
-				case "Minuto":
-					return UnidadesTiempo.MINUTO.get();
-				case "Hora":
-					return UnidadesTiempo.HORA.get();
-				case "Día":
-					return UnidadesTiempo.DIA.get();
-				case "Semana":
-					return UnidadesTiempo.SEMANA.get();
-				case "Mes":
-					return UnidadesTiempo.MES.get();
-				case "Año":
-					return UnidadesTiempo.AÑO.get();
-				default:
-					return null;
-			}
-		} else if(sistema.equals("Temperatura")) {
-			switch(nombre) {
-				case "Celsius":
-					return UnidadesTemperatura.CELSIUS.get();
-				case "Fahrenheit":
-					return UnidadesTemperatura.FAHRENHEIT.get();
-				case "Kelvin":
-					return UnidadesTemperatura.KELVIN.get();
-				case "Rankine":
-					return UnidadesTemperatura.RANKINE.get();
-				default:
-					return null;
-			}
-		}
-		return null;
-	}
-
     private class ConvertirButtonListener implements ActionListener {
 
         @Override
@@ -263,8 +210,8 @@ public class App {
 				return;
 			}
 			if(conversion.equals("Longitud")) {
-				UnidadLongitud unidad = (UnidadLongitud) getUnidad(unidadEntrada, conversion);
-				UnidadLongitud unidad2 = (UnidadLongitud) getUnidad(unidadSalida, conversion);
+				UnidadLongitud unidad = (UnidadLongitud) ConversorUniversal.getUnidad(unidadEntrada, conversion);
+				UnidadLongitud unidad2 = (UnidadLongitud) ConversorUniversal.getUnidad(unidadSalida, conversion);
 				try {
 					Longitud entrada = new Longitud(input, unidad);
 					Longitud salida = ConversorUniversal.convertir(entrada, unidad2);
@@ -276,8 +223,8 @@ public class App {
 					e1.printStackTrace();
 				}
 			} else if (conversion.equals("Tiempo")) {
-				UnidadTiempo unidad = (UnidadTiempo) getUnidad(unidadEntrada, conversion);
-				UnidadTiempo unidad2 = (UnidadTiempo) getUnidad(unidadSalida, conversion);
+				UnidadTiempo unidad = (UnidadTiempo) ConversorUniversal.getUnidad(unidadEntrada, conversion);
+				UnidadTiempo unidad2 = (UnidadTiempo) ConversorUniversal.getUnidad(unidadSalida, conversion);
 				try {
 					Tiempo entrada = new Tiempo(input, unidad);
 					Tiempo salida = ConversorUniversal.convertir(entrada, unidad2);
@@ -289,11 +236,24 @@ public class App {
 					e1.printStackTrace();
 				}
 			} else if (conversion.equals("Temperatura")) {
-				UnidadTemperatura unidad = (UnidadTemperatura) getUnidad(unidadEntrada, conversion);
-				UnidadTemperatura unidad2 = (UnidadTemperatura) getUnidad(unidadSalida, conversion);
+				UnidadTemperatura unidad = (UnidadTemperatura) ConversorUniversal.getUnidad(unidadEntrada, conversion);
+				UnidadTemperatura unidad2 = (UnidadTemperatura) ConversorUniversal.getUnidad(unidadSalida, conversion);
 				try {
 					Temperatura entrada = new Temperatura(input, unidad);
 					Temperatura salida = ConversorUniversal.convertir(entrada, unidad2);
+					campoResultado.setText(salida.getValorFormateado().toPlainString());
+					panelConversion.setText(
+						String.format("%s =\n%s", entrada.toString(), salida.toString())
+					);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			} else if (conversion.equals("Divisa")) {
+				Divisa divisa = (Divisa) ConversorUniversal.getUnidad(unidadEntrada, conversion);
+				Divisa divisa2 = (Divisa) ConversorUniversal.getUnidad(unidadSalida, conversion);
+				try {
+					Dinero entrada = new Dinero(input, divisa);
+					Dinero salida = ConversorUniversal.convertir(entrada, divisa2);
 					campoResultado.setText(salida.getValorFormateado().toPlainString());
 					panelConversion.setText(
 						String.format("%s =\n%s", entrada.toString(), salida.toString())
@@ -332,6 +292,10 @@ public class App {
 				for (UnidadesTemperatura unidad : UnidadesTemperatura.values()) {
 					opcionesUnidadBase.addItem(unidad.get().getNombre());
 				}
+			} else if (seleccion.equals("Divisa")) {
+				for (Monedas divisa : Monedas.values()) {
+					opcionesUnidadBase.addItem(divisa.get().getNombre());
+				}
 			}
 			hanCargadoLasOpciones = true;
 		}
@@ -347,24 +311,19 @@ public class App {
 			String seleccionConversion = (String) listaConversiones.getSelectedItem();
 			String seleccionUnidad = (String) opcionesUnidadBase.getSelectedItem();
 			opcionesResultado.removeAllItems();
+			UnidadBase unidad = null;
 			if (seleccionConversion.equals("Longitud")) {
-				UnidadLongitud unidad = (UnidadLongitud) getUnidad(seleccionUnidad, seleccionConversion);
-				Set<String> posiblesConversiones = unidad.getListaDePosiblesConversiones();
-				for (String conversion : posiblesConversiones) {
-					opcionesResultado.addItem(conversion);
-				}
+				unidad = (UnidadLongitud) ConversorUniversal.getUnidad(seleccionUnidad, seleccionConversion);
 			} else if (seleccionConversion.equals("Tiempo")) {
-				UnidadTiempo unidad = (UnidadTiempo) getUnidad(seleccionUnidad, seleccionConversion);
-				Set<String> posiblesConversiones = unidad.getListaDePosiblesConversiones();
-				for (String conversion : posiblesConversiones) {
-					opcionesResultado.addItem(conversion);
-				}
+				unidad = (UnidadTiempo) ConversorUniversal.getUnidad(seleccionUnidad, seleccionConversion);
 			} else if (seleccionConversion.equals("Temperatura")) {
-				UnidadTemperatura unidad = (UnidadTemperatura) getUnidad(seleccionUnidad, seleccionConversion);
-				Set<String> posiblesConversiones = unidad.getListaDePosiblesConversiones();
-				for (String conversion : posiblesConversiones) {
-					opcionesResultado.addItem(conversion);
-				}
+				unidad = (UnidadTemperatura) ConversorUniversal.getUnidad(seleccionUnidad, seleccionConversion);
+			} else if (seleccionConversion.equals("Divisa")) {
+				unidad = (Divisa) ConversorUniversal.getUnidad(seleccionUnidad, seleccionConversion);
+			}
+			Set<String> posiblesConversiones = unidad.getListaDePosiblesConversiones();
+			for (String conversion : posiblesConversiones) {
+				opcionesResultado.addItem(conversion);
 			}
 		}
 	}
